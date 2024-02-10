@@ -5,5 +5,5 @@
 
 Its been a busy week but the upcoming one is hell :face_exhaling:
 
-Honestly i love API's they are amazing:cupid:
-Maybe ill marry them:grin:
+Honestly i love API's they are amazing  :cupid:
+Maybe ill marry them  :grin:
