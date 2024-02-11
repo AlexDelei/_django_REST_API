@@ -29,6 +29,8 @@ def api_home(request, *args, **kwargs):
     
     
     
+    
+    
     #model_data = Product.objects.all().order_by("?").first()
     #data = request.data
 
