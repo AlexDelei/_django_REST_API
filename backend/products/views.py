@@ -6,18 +6,25 @@ from . models import Product
 from .serializers import ProductSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .permissions import IsStaffEditorPermission
-
 from django.shortcuts import get_object_or_404
 from api import *
+from api.authentication import TokenAuthentication
+from api.mixin import StaffEditotoPermissionMixin
 
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+
+class ProductListCreateAPIView(
+    StaffEditotoPermissionMixin,
+    generics.ListCreateAPIView
+    ):
     """
     Query's all data from our model storage
     creates new object's
     """
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.DjangoModelPermissions]
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        TokenAuthentication
+        ]
+   # permission_classes = [permissions.DjangoModelPermissions]
     # this is a method of allowing authentified users to  access views
 
     queryset = Product.objects.all()
@@ -37,7 +44,10 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         serializer.save(content=content)
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(
+    StaffEditotoPermissionMixin,
+    generics.RetrieveAPIView
+    ):
     """
     Detailed listing of an object
     """
@@ -46,7 +56,10 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
     # then serializer_class specifies the serializer class to use in this class
 
-class ProductDestroyAPIView(generics.DestroyAPIView):
+class ProductDestroyAPIView(
+    StaffEditotoPermissionMixin,
+    generics.DestroyAPIView
+    ):
     """
     Deleting object of primary key given 'lookup_field'
     """
@@ -59,7 +72,9 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
     def perform_destroy(self, instance):
         super().perform_destroy(instance)
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(
+    StaffEditotoPermissionMixin,
+    generics.UpdateAPIView):
     """
     Update object in records
     """
@@ -83,6 +98,7 @@ class ProductMixinView(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
+    StaffEditotoPermissionMixin,
     generics.GenericAPIView
     ):
     """
