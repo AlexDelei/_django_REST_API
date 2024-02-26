@@ -1,6 +1,5 @@
 from rest_framework import generics
 from rest_framework import mixins
-from rest_framework import  permissions
 from rest_framework import authentication
 from . models import Product
 from .serializers import ProductSerializer
@@ -9,11 +8,11 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api import *
 from api.authentication import TokenAuthentication
-from api.mixin import StaffEditotoPermissionMixin
+from api.mixin import StaffEditorPermissionMixin
 
 
 class ProductListCreateAPIView(
-    StaffEditotoPermissionMixin,
+    StaffEditorPermissionMixin,
     generics.ListCreateAPIView
     ):
     """
@@ -43,9 +42,19 @@ class ProductListCreateAPIView(
             content = title
         serializer.save(content=content)
 
+    def get_queryset(self, *args, **kwargs):
+        request = self.request
+        qs =  Product.objects.all() 
+        user = request.user
+        if not user.is_authenticated:
+            return Product.objects.none()
+        print(request.user)
+        print(f"#####{user}")
+        return qs.filter(user=user)
+
 
 class ProductDetailAPIView(
-    StaffEditotoPermissionMixin,
+    StaffEditorPermissionMixin,
     generics.RetrieveAPIView
     ):
     """
@@ -57,7 +66,7 @@ class ProductDetailAPIView(
     # then serializer_class specifies the serializer class to use in this class
 
 class ProductDestroyAPIView(
-    StaffEditotoPermissionMixin,
+    StaffEditorPermissionMixin,
     generics.DestroyAPIView
     ):
     """
@@ -73,7 +82,7 @@ class ProductDestroyAPIView(
         super().perform_destroy(instance)
 
 class ProductUpdateAPIView(
-    StaffEditotoPermissionMixin,
+    StaffEditorPermissionMixin,
     generics.UpdateAPIView):
     """
     Update object in records
@@ -98,7 +107,7 @@ class ProductMixinView(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
-    StaffEditotoPermissionMixin,
+    StaffEditorPermissionMixin,
     generics.GenericAPIView
     ):
     """
