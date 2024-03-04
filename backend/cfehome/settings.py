@@ -37,10 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
+    # third party api services
+    'algoliasearch_django',
+
+    # Third party packages
     'rest_framework',
     'rest_framework.authtoken',
+
+    # internal apps
+    'api',
     'products',
+    'search',
 ]
 
 MIDDLEWARE = [
@@ -126,12 +133,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#REST_FRAMEWORK = {
-#    "DEFAULT_AUTHENTICATION_CLASSES": [
-#        "rest_framework.authentication.SessionAuthentication",
-#        "api.authentication.TokenAuthentication"
-#    ],
-#    "DEFAULT_PERMISSION_CLASSES": [
-#        "rest_framework.permission.IsAuthenticatedOrReadOnly"
-#    ]
-#}
+ALGOLIA = {
+  'APPLICATION_ID': 'DBWKZN4DVC',
+  'API_KEY': '533a71e39411a0a03fe66d7a7650c7a7',
+  'INDEX_PREFIX': 'alex'
+}
