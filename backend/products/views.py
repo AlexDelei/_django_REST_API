@@ -19,10 +19,6 @@ class ProductListCreateAPIView(
     Query's all data from our model storage
     creates new object's
     """
-    authentication_classes = [
-        authentication.SessionAuthentication,
-        TokenAuthentication
-        ]
    # permission_classes = [permissions.DjangoModelPermissions]
     # this is a method of allowing authentified users to  access views
 
@@ -48,8 +44,8 @@ class ProductListCreateAPIView(
         user = request.user
         if not user.is_authenticated:
             return Product.objects.none()
-        print(request.user)
-        print(f"#####{user}")
+        print(f"------->{request.user}")
+        print(f"----->{user}")
         return qs.filter(user=user)
 
 
